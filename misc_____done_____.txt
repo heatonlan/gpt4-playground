@@ -1,0 +1,60 @@
+npm install -g yarn
+
+
+
+UBUNTU
+wget https://codeload.github.com/heatonlan/gpt4-playground/zip/refs/heads/main
+unzip main.zip -d gpt4-playground
+sudo apt install nodejs
+sudo apt install npm
+su
+npm install -g yarn
+yarn install
+npm install react
+npm install
+npm install react-dom
+sudo apt update
+sudo apt upgrade nodejs
+
+
+-------------------------------------
+/home/heatonlan/gpt4-playground/gpt4-playground-main/node_modules/next/dist/cli/next-dev.js:362
+            showAll: args["--show-all"] ?? false,
+                                         ^
+
+SyntaxError: Unexpected token ?
+--------------------------------------
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+RESET 
+
+source ~/.bashrc
+nvm --version
+nvm install 18.12.1
+node --version
+
+npm run build
+npm run start
+
+
+sudo apt-get update
+sudo apt-get install nginx
+
+sudo nano /etc/nginx/sites-available/default
+
+location / {
+    proxy_pass http://20.168.69.178:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}
+
+sudo service nginx restart
+
+//background http server
+npm install -g pm2
+pm2 start npm -- start
+
+//else
+pm2 list
+pm2 stop process-id
+pm2 startup
