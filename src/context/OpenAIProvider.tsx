@@ -306,8 +306,8 @@ export default function OpenAIProvider({ children }: PropsWithChildren) {
           const chunkValue = decoder.decode(value);
           message.content += chunkValue;
 
-          let new_content = extractNewCode(message.content);
-          updateMessageContent(message.id as number, new_content);
+          //let new_content = extractNewCode(message.content);
+          updateMessageContent(message.id as number, message.content);
         }
       } catch (error: any) {
         setMessages((prev) => {
