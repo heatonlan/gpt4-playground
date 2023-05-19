@@ -51,9 +51,8 @@ location / {
     proxy_set_header X-Real-IP $remote_addr;
 }
 
-sudo service nginx restart
-
 //background http server
+sudo service nginx restart
 npm install -g pm2
 pm2 start npm -- start
 

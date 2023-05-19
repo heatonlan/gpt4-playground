@@ -4,6 +4,50 @@ import { MdSend } from "react-icons/md";
 
 type Props = {};
 
+
+  //
+  //prefix_code
+  //
+  //write new code here
+  //
+  //suffix_code
+  //
+
+function generateFullPromptWriteNew(instructions: string, suffix_code: string, prefix_code: string): string {
+  const fullPromptWriteNew = `
+      You are an intelligent programmer. Your task is to write me some new code. Your code will be inserted into an existing code file.
+      For reference, here is some of the existing code below where your code will be inserted:
+      <suffix_code>
+      ${suffix_code}
+      </suffix_code>
+      Your generated code should follow these instructions:
+      <instructions_for_new_code>
+      ${instructions}
+      </instructions_for_new_code>
+      You will see my code file. Then, you will output your answer in the following format:
+      <answer>
+      <prefix_code>
+      ${prefix_code}
+      </prefix_code>
+      <new_code>
+      The code above where your code will be inserted
+      </new_code>
+      </answer>`;
+  return fullPromptWriteNew;
+}
+
+function generateFullPromptRewrite(instructions: string, suffix_code: string, prefix_code: string): string { return "" }
+ 
+export function extractNewCode(fullPromptWriteNew: string): string {
+  const regex = /<new_code>([\s\S]*?)<\/new_code>/;
+  const match = fullPromptWriteNew.match(regex);
+  if (match) {
+    return match[1];
+  } else {
+    return "";
+  }
+}
+
 export default function ChatInput({}: Props) {
   const { addMessage, loading } = useOpenAI();
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -17,7 +61,8 @@ export default function ChatInput({}: Props) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (loading) return;
     e.preventDefault();
-    addMessage(input, true, "user");
+    let new_input = generateFullPromptWriteNew(input, "", "");
+    addMessage(new_input, true, "user");
     setInput("");
   };
 

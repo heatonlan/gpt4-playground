@@ -1,4 +1,5 @@
-import React from "react";
+import React, { PureComponent } from 'react'
+import ReactDiffViewer from 'react-diff-viewer'
 import AddTokenModal from "./../auth/AddTokenModal";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";
@@ -8,6 +9,9 @@ type Props = {};
 
 export default function ChatPlaceholder({}: Props) {
   const { token } = useAuth();
+  const oldCode = `diff_test: what is your favorate game?`
+  const newCode = "test_diff: my favorate game is chess"
+
   return ( 
     <div className="flex h-full w-full items-center justify-center">
       <div className="max-w-3xl p-4 text-center text-primary">
@@ -21,6 +25,11 @@ export default function ChatPlaceholder({}: Props) {
             Playground
           </Link> for the next generation of AI-powered
         </p>
+        <ReactDiffViewer
+        oldValue={oldCode}
+        newValue={newCode}
+        splitView={true}
+        />
         {!token && (
         <div className="m-4 flex items-center justify-center">
           <AddTokenModal />

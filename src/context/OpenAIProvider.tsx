@@ -17,6 +17,7 @@ import {
 import React, { PropsWithChildren, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/context/AuthProvider";
+import extractNewCode from "@/components/chat/ChatInput";
 
 const CHAT_ROUTE = "/";
 
@@ -295,7 +296,8 @@ export default function OpenAIProvider({ children }: PropsWithChildren) {
           const chunkValue = decoder.decode(value);
           message.content += chunkValue;
 
-          updateMessageContent(message.id as number, message.content);
+          let new_content = extractNewCode(message.content);
+          updateMessageContent(message.id as number, new_content);
         }
       } catch (error: any) {
         setMessages((prev) => {
