@@ -17,9 +17,19 @@ import {
 import React, { PropsWithChildren, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/context/AuthProvider";
-import extractNewCode from "@/components/chat/ChatInput";
+//import extractNewCode from "@/components/chat/ChatInput";
 
 const CHAT_ROUTE = "/";
+
+function extractNewCode(fullPromptWriteNew: string): string {
+  const regex = /<new_code>([\s\S]*?)<\/new_code>/;
+  const match = fullPromptWriteNew.match(regex);
+  if (match) {
+    return match[1] as string;
+  } else {
+    return "";
+  }
+}
 
 const defaultContext = {
   systemMessage: {

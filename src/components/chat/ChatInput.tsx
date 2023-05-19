@@ -38,16 +38,6 @@ function generateFullPromptWriteNew(instructions: string, suffix_code: string, p
 
 function generateFullPromptRewrite(instructions: string, suffix_code: string, prefix_code: string): string { return "" }
  
-export function extractNewCode(fullPromptWriteNew: string): string {
-  const regex = /<new_code>([\s\S]*?)<\/new_code>/;
-  const match = fullPromptWriteNew.match(regex);
-  if (match) {
-    return match[1];
-  } else {
-    return "";
-  }
-}
-
 export default function ChatInput({}: Props) {
   const { addMessage, loading } = useOpenAI();
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
