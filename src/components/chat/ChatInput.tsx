@@ -3,40 +3,6 @@ import { useOpenAI } from "@/context/OpenAIProvider";
 import { MdSend } from "react-icons/md";
 
 type Props = {};
-
-
-  //
-  //prefix_code
-  //
-  //write new code here
-  //
-  //suffix_code
-  //
-
-function generateFullPromptWriteNew(instructions: string, suffix_code: string, prefix_code: string): string {
-  const fullPromptWriteNew = `
-      You are an intelligent programmer. Your task is to write me some new code. Your code will be inserted into an existing code file.
-      For reference, here is some of the existing code below where your code will be inserted:
-      <suffix_code>
-      ${suffix_code}
-      </suffix_code>
-      Your generated code should follow these instructions:
-      <instructions_for_new_code>
-      ${instructions}
-      </instructions_for_new_code>
-      You will see my code file. Then, you will output your answer in the following format:
-      <answer>
-      <prefix_code>
-      ${prefix_code}
-      </prefix_code>
-      <new_code>
-      The code above where your code will be inserted
-      </new_code>
-      </answer>`;
-  return fullPromptWriteNew;
-}
-
-function generateFullPromptRewrite(instructions: string, suffix_code: string, prefix_code: string): string { return "" }
  
 export default function ChatInput({}: Props) {
   const { addMessage, loading } = useOpenAI();
@@ -51,8 +17,7 @@ export default function ChatInput({}: Props) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (loading) return;
     e.preventDefault();
-    let new_input = generateFullPromptWriteNew(input, "", "");
-    addMessage(new_input, true, "user");
+    addMessage(input, true, "user");
     setInput("");
   };
 

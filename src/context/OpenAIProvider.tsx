@@ -17,9 +17,42 @@ import {
 import React, { PropsWithChildren, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/context/AuthProvider";
-//import extractNewCode from "@/components/chat/ChatInput";
 
 const CHAT_ROUTE = "/";
+
+
+//
+//prefix_code
+//
+//write new code here
+//
+//suffix_code
+//
+
+function generateFullPromptWriteNew(instructions: string, suffix_code: string, prefix_code: string): string {
+  const fullPromptWriteNew = `
+        You are an intelligent programmer. Your task is to write me some new code. Your code will be inserted into an existing code file.
+        For reference, here is some of the existing code below where your code will be inserted:
+        <suffix_code>
+        ${suffix_code}
+        </suffix_code>
+        Your generated code should follow these instructions:
+        <instructions_for_new_code>
+        ${instructions}
+        </instructions_for_new_code>
+        You will see my code file. Then, you will output your answer in the following format:
+        <answer>
+        <prefix_code>
+        ${prefix_code}
+        </prefix_code>
+        <new_code>
+        The code above where your code will be inserted
+        </new_code>
+        </answer>`;
+  return fullPromptWriteNew;
+}
+
+function generateFullPromptRewrite(instructions: string, suffix_code: string, prefix_code: string): string { return "" }
 
 function extractNewCode(fullPromptWriteNew: string): string {
   const regex = /<new_code>([\s\S]*?)<\/new_code>/;
@@ -34,7 +67,7 @@ function extractNewCode(fullPromptWriteNew: string): string {
 const defaultContext = {
   systemMessage: {
     role: "system",
-    content: "You are a helpful AI chatbot.",
+    content: "You are a top AI programmer.",
   } as OpenAISystemMessage,
   messages: [] as OpenAIChatMessage[],
   config: defaultConfig as OpenAIConfig,
@@ -255,22 +288,29 @@ export default function OpenAIProvider({ children }: PropsWithChildren) {
 
       try {
         const decoder = new TextDecoder();
+        const newMessages = [...messages_].map(({ role, content }) => ({
+          role,
+          content: generateFullPromptWriteNew(content, "", ""),
+        }));
+
+        const requestBody = {
+          ...config,
+          messages: [systemMessage, ...newMessages].map(({ role, content }) => ({
+            role,
+            content,
+          })),
+        };
+        
         const { body, ok } = await fetch("/api/completion", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            ...config,
-            messages: [systemMessage, ...messages_].map(
-              ({ role, content }) => ({
-                role,
-                content,
-              })
-            ),
-          }),
+          body: JSON.stringify(requestBody),
         });
+
+        console.log(requestBody); 
 
         if (!body) return;
         const reader = body.getReader();
@@ -306,8 +346,8 @@ export default function OpenAIProvider({ children }: PropsWithChildren) {
           const chunkValue = decoder.decode(value);
           message.content += chunkValue;
 
-          //let new_content = extractNewCode(message.content);
-          updateMessageContent(message.id as number, message.content);
+          let new_content = extractNewCode(message.content);
+          updateMessageContent(message.id as number, new_content);
         }
       } catch (error: any) {
         setMessages((prev) => {
