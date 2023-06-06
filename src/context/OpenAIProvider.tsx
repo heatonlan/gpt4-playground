@@ -30,6 +30,7 @@ const CHAT_ROUTE = "/";
 //
 
 function generateFullPromptWriteNew(instructions: string, suffix_code: string, prefix_code: string): string {
+  return instructions;
   const fullPromptWriteNew = `
         You are an intelligent programmer. Your task is to write me some new code. Your code will be inserted into an existing code file.
         For reference, here is some of the existing code below where your code will be inserted:
