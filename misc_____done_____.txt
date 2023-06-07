@@ -1,7 +1,20 @@
+sudo apt update
+sudo apt install nodejs npm
+npm -v
+
+npm install -g yarn
+yarn install      (XX)
+sudo apt-get remove nodejs
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+RESETTTTTT
+
+nvm install 16.3.0
+nvm use 16.3.0
+
 C:\Users\asus\.ssh
 
 
-npm install -g yarn
 
 
 
@@ -39,6 +52,7 @@ node --version
 npm run build
 npm run start
 
+-------------------------------------------------------------------------------------
 
 sudo apt-get update
 sudo apt-get install nginx

@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import ReactDiffViewer from 'react-diff-viewer'
 import AddTokenModal from "./../auth/AddTokenModal";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";
@@ -25,11 +24,6 @@ export default function ChatPlaceholder({}: Props) {
             Experience the next-gen services empowered by AI now
           </Link>
         </p>
-        <ReactDiffViewer
-        oldValue={oldCode}
-        newValue={newCode}
-        splitView={true}
-        />
         {!token && (
         <div className="m-4 flex items-center justify-center">
           <AddTokenModal />
